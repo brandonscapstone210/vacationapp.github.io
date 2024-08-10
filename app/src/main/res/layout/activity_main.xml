@@ -41,16 +41,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_tsunami_24" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="406dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="4dp"
-        android:text="Activity List"
-        android:textAlignment="viewStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

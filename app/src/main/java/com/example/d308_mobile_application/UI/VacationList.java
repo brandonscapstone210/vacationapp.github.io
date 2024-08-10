@@ -1,8 +1,10 @@
 package com.example.d308_mobile_application.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -21,7 +23,14 @@ public class VacationList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_list);
-
+        FloatingActionButton fab=findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(VacationList.this, VacationDetails.class);
+                startActivity(intent);
+            }
+        });
 
         System.out.println(getIntent().getStringExtra("test"));
     }
@@ -38,6 +47,8 @@ public class VacationList extends AppCompatActivity {
         }
         if(item.getItemId()==android.R.id.home){
             this.finish();
+            Intent intent=new Intent(VacationList.this, VacationDetails.class);
+            startActivity(intent);
             return true;
         }
         return true;
