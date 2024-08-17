@@ -7,15 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".UI.VacationDetails">
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="194dp"
-        android:layout_height="69dp"
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="171dp"
+        android:layout_height="23dp"
+        android:layout_marginBottom="200dp"
         android:text="Vacation Details"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.293" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

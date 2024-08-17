@@ -7,17 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".UI.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take a Vacation!"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.195" />
 
     <Button
         android:id="@+id/button"
@@ -34,11 +23,22 @@
         android:id="@+id/imageView"
         android:layout_width="152dp"
         android:layout_height="140dp"
-        android:layout_marginTop="292dp"
+        android:layout_marginTop="264dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_tsunami_24" />
+
+    <androidx.appcompat.widget.Toolbar
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/toolbar"
+         android:background="@color/cardview_dark_background"
+         app:title="Take a Vacation!"
+         app:titleTextColor="@color/cardview_light_background"
+         android:theme="@style/Base.Theme.D308MobileApplication"
+         app:popupTheme="@style/Base.Theme.D308MobileApplication"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
