@@ -20,4 +20,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:background="@color/cardview_dark_background"
+        app:title="Take a Vacation!"
+        app:titleTextColor="@color/cardview_light_background"
+        android:theme="@style/Base.Theme.D308MobileApplication"
+        app:popupTheme="@style/Base.Theme.D308MobileApplication"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

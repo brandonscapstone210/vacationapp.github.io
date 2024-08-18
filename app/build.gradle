@@ -28,6 +28,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation libs.appcompat
@@ -39,10 +40,7 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-    implementation "android.room-runtime:$rootProject.roomVersion"
-    annotationProcessor "android.room:room-compiler:$rootProject.roomVersion"
-    androidTestImplementation "android.room:room-testing:$rootProject.roomVersion"
-    annotationProcessor libs.room.compiler
-
-
+    implementation("androidx.room:room-runtime:${rootProject.ext.get("roomVersion")}")
+    annotationProcessor("androidx.room:room-compiler:${rootProject.ext.get("roomVersion")}")
+    androidTestImplementation("androidx.room:room-testing:${rootProject.ext.get("roomVersion")}")
 }
