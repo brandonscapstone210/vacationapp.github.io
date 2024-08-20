@@ -26,7 +26,4 @@ public interface ExcursionDAO {
     List<Excursion> getAllExcursions();
 
 
-    @Query("SELECT * FROM excursions WHERE vacationID=:vaca ORDER BY excursionID ASC ")
-    List<Excursion> getAssociatedExcursions(int vaca);
-
 }
