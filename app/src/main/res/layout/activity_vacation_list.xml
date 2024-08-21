@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".UI.VacationList">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="171dp"
-        android:layout_height="23dp"
-        android:layout_marginBottom="200dp"
-        android:text="Vacation List"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="NotSibling" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="171dp"-->
+<!--        android:layout_height="23dp"-->
+<!--        android:layout_marginBottom="200dp"-->
+<!--        android:text="Vacation List"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/imageView"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:ignore="NotSibling" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -33,17 +34,17 @@
         app:layout_constraintVertical_bias="0.94"
         app:srcCompat="@drawable/baseline_add_24" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        android:background="@color/cardview_dark_background"
-        app:title="Take a Vacation!"
-        app:titleTextColor="@color/cardview_light_background"
-        android:theme="@style/Base.Theme.D308MobileApplication"
-        app:popupTheme="@style/Base.Theme.D308MobileApplication"
-        app:navigationIcon="@drawable/baseline_arrow_back_ios_24"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/toolbar"-->
+<!--        android:background="@color/cardview_dark_background"-->
+<!--        app:title="Take a Vacation!"-->
+<!--        app:titleTextColor="@color/cardview_light_background"-->
+<!--        android:theme="@style/Base.Theme.D308MobileApplication"-->
+<!--        app:popupTheme="@style/Base.Theme.D308MobileApplication"-->
+<!--        app:navigationIcon="@drawable/baseline_arrow_back_ios_24"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/toolbar"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

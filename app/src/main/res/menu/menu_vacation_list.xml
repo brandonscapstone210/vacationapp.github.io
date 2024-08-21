@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:andriod="http://schemas.android.com/apk/res-auto">
-    <item andriod:title="Add Sample Code"
-    android:id="@+id/mysample"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Add Sample Vacations"
+    android:id="@+id/addSampleVacations"/>
     <item android:title="Item"
         android:id="@+id/item"/>
 </menu>

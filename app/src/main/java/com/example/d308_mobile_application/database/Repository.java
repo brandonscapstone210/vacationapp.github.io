@@ -7,58 +7,52 @@ import com.example.d308_mobile_application.dao.VacationDAO;
 import com.example.d308_mobile_application.entities.Excursion;
 import com.example.d308_mobile_application.entities.Vacation;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Repository {
-    private ExcursionDAO mExcursionDAO;
-    private VacationDAO mVacationDAO;
+    private final ExcursionDAO mExcursionDAO;
+    private final VacationDAO mVacationDAO;
 
-    private List<Excursion> mALLExcursions;
-    private List<Vacation> mALLVacations;
 
-    private static int NUMBER_OF_THREADS=4;
-    static final ExecutorService databaseExecutor= Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private static final int NUMBER_OF_THREADS = 4;
+    static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public Repository(Application application){
-        VacationDatabaseBuilder db=VacationDatabaseBuilder.getDatabase(application);
-        mExcursionDAO=db.excursionDAO();
-        mVacationDAO= db.vacationDAO();
+        VacationDatabaseBuilder db = VacationDatabaseBuilder.getDatabase(application);
+        mExcursionDAO = db.excursionDAO();
+        mVacationDAO = db.vacationDAO();
 
     }
 
-    public List<Vacation>getmALLVacations(){
-        databaseExecutor.execute(()->{
-            mALLVacations=mVacationDAO.getAllVacations();
-        });
-
+    public List<Vacation> getmALLVacations(){
         try{
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            return databaseExecutor.submit(mVacationDAO::getAllVacations).get();
+        } catch (ExecutionException | InterruptedException e){
+            //Would log error
         }
-
-        return mALLVacations;
+        return new ArrayList<>();
     }
 
-    public List<Excursion>getmALLExcursions() {
-        databaseExecutor.execute(() -> {
-            mALLExcursions = mExcursionDAO.getAllExcursions();
-        });
-
+    public List<Excursion> getmALLExcursions() {
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            return databaseExecutor.submit(mExcursionDAO::getAllExcursions).get();
+        } catch (ExecutionException | InterruptedException e) {
+            //would log error
         }
 
-        return mALLExcursions;
+        return new ArrayList<>();
     }
 
 
     public void insert(Vacation vacation) {
+        databaseExecutor.execute(()->mVacationDAO.insert(vacation));
     }
     public void insert(Excursion excursion) {
+        databaseExecutor.execute(()->mExcursionDAO.insert(excursion));
     }
 }
