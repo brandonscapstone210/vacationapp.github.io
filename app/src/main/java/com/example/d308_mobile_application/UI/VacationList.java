@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.d308_mobile_application.database.Repository;
 import com.example.d308_mobile_application.entities.Excursion;
@@ -15,6 +17,8 @@ import com.example.d308_mobile_application.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.example.d308_mobile_application.R;
+
+import java.util.List;
 
 
 public class VacationList extends AppCompatActivity {
@@ -29,6 +33,14 @@ public class VacationList extends AppCompatActivity {
             Intent intent = new Intent(VacationList.this, VacationDetails.class);
             startActivity(intent);
         });
+
+        RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
+        repository = new Repository(getApplication());
+        List<Vacation> allVacations = repository.getmALLVacations();
+        final VacationAdapter vacationAdapter = new VacationAdapter(this);
+        recyclerView.setAdapter(vacationAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vacationAdapter.setVacations(allVacations);
 
 //        repository = new Repository(getApplication());
 //        System.out.println(getIntent().getStringExtra("test"));
