@@ -3,6 +3,8 @@ package com.example.d308_mobile_application.UI;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.d308_mobile_application.R;
 import com.example.d308_mobile_application.database.Repository;
 import com.example.d308_mobile_application.entities.Excursion;
+import com.example.d308_mobile_application.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -80,7 +83,6 @@ public class VacationDetails extends AppCompatActivity {
 
 
 
-
         button = findViewById(R.id.datePicker);
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -120,6 +122,31 @@ public class VacationDetails extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         button.setText(sdf.format(myCalendar.getTime()));
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_vacation_details, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.vactionsave){
+            Vacation vacation;
+            if (vacationID == -1){
+                if(repository.getmALLVacations().size() == 0) vacationID = 1;
+                else vacationID = repository.getmALLVacations().get(repository.getmALLExcursions().size() - 1).getVacationID() + 1;
+                vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), editStartDate.getText().toString(), editEndDate.getText().toString());
+                repository.insert(vacation);
+                this.finish();
+            }
+            else{
+                vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), editStartDate.getText().toString(), editEndDate.getText().toString());
+                repository.update(vacation);
+                this.finish();
+            }
+        }
+        return true;
     }
 
 }
