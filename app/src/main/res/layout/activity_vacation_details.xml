@@ -2,33 +2,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/vacationDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.VacationDetails">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="171dp"
-        android:layout_height="23dp"
-        android:layout_marginBottom="200dp"
-        android:text="Vacation Details"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="200dp"
+        android:background="#00BCD4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/toolbar"
-        android:background="@color/cardview_dark_background"
-        app:title="Take a Vacation!"
-        app:titleTextColor="@color/cardview_light_background"
-        android:theme="@style/Base.Theme.D308MobileApplication"
-        app:popupTheme="@style/Base.Theme.D308MobileApplication"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:text="Title: "></TextView>
+
+            <EditText
+                android:id = "@+id/titletext"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="second"></EditText>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="third"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="fourth"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="fifth"></TextView>
+            />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

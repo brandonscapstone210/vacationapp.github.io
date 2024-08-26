@@ -25,16 +25,12 @@ public class VacationList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vacation_list);
         FloatingActionButton fab=findViewById(R.id.floatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-//                Intent intent = new Intent(VacationList.this, VacationDetails.class);
-//                startActivity(intent);
-            }
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(VacationList.this, VacationDetails.class);
+            startActivity(intent);
         });
 
         repository = new Repository(getApplication());
-
         System.out.println(getIntent().getStringExtra("test"));
     }
 
@@ -47,18 +43,12 @@ public class VacationList extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
-        if(item.getItemId()==android.R.id.home){
-            this.finish();
-//            Intent intent=new Intent(VacationList.this, VacationDetails.class);
-//            startActivity(intent);
-            return true;
-        }
 
-        if(item.getItemId() == R.id.addSampleVacations){
+        if(item.getItemId() == R.id.sample){
             repository=new Repository(getApplication());
             //Toast.makeText(VacationList.this,"put in sample data", Toast.LENGTH_LONG).show();
             Vacation vacation=new Vacation(0,"Italy",80);
-            repository.insert(vacation);
+            //repository.insert(vacation);
             vacation = new Vacation(1, "France", 100);
             repository.insert(vacation);
             Excursion excursion= new Excursion(0, "surfing", 50, 0);
@@ -68,6 +58,10 @@ public class VacationList extends AppCompatActivity {
             return true;
         }
 
+        if(item.getItemId() == android.R.id.home){
+            this.finish();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
