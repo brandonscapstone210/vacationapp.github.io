@@ -3,20 +3,20 @@ package com.example.d308_mobile_application.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.text.DateFormat;
+
 @Entity(tableName = "excursions")
 public class Excursion {
     @PrimaryKey
     private int excursionID;
     private String excursionName;
-    private double price;
-    private int productID;
+    private String excursionDate;
 
 
-    public Excursion(int excursionID, String excursionName, double price, int productID) {
+    public Excursion(int excursionID, String excursionName, String excursionDate) {
         this.excursionID = excursionID;
         this.excursionName = excursionName;
-        this.price = price;
-        this.productID = productID;
+        this.excursionDate = excursionDate;
     }
 
     public int getExcursionID() {
@@ -27,11 +27,7 @@ public class Excursion {
         return excursionName;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public int getProductID() {
-        return productID;
+    public String getExcursionDate() {
+        return excursionDate;
     }
 }
