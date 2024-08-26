@@ -14,7 +14,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class Repository {
+public class
+Repository {
     private final ExcursionDAO mExcursionDAO;
     private final VacationDAO mVacationDAO;
 
@@ -55,4 +56,23 @@ public class Repository {
     public void insert(Excursion excursion) {
         databaseExecutor.execute(()->mExcursionDAO.insert(excursion));
     }
+
+    public void update(Vacation vacation) {
+        databaseExecutor.execute(()->mVacationDAO.update(vacation));
+    }
+
+    public void update(Excursion excursion) {
+        databaseExecutor.execute(()->mExcursionDAO.update(excursion));
+    }
+
+
+    public void delete(Vacation vacation) {
+        databaseExecutor.execute(()->mVacationDAO.delete(vacation));
+    }
+
+    public void delete(Excursion excursion) {
+        databaseExecutor.execute(()->mExcursionDAO.delete(excursion));
+    }
+
+
 }

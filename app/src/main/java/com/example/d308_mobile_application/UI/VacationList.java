@@ -30,8 +30,8 @@ public class VacationList extends AppCompatActivity {
             startActivity(intent);
         });
 
-        repository = new Repository(getApplication());
-        System.out.println(getIntent().getStringExtra("test"));
+//        repository = new Repository(getApplication());
+//        System.out.println(getIntent().getStringExtra("test"));
     }
 
     @Override
@@ -47,13 +47,13 @@ public class VacationList extends AppCompatActivity {
         if(item.getItemId() == R.id.sample){
             repository=new Repository(getApplication());
             //Toast.makeText(VacationList.this,"put in sample data", Toast.LENGTH_LONG).show();
-            Vacation vacation=new Vacation(0,"Italy",80);
-            //repository.insert(vacation);
-            vacation = new Vacation(1, "France", 100);
+            Vacation vacation=new Vacation(0, "Italy", "Marriot", "01/15/24", "01/25/24");
             repository.insert(vacation);
-            Excursion excursion= new Excursion(0, "surfing", 50, 0);
+            vacation = new Vacation(1, "France", "Sleepy Inn", "02/02/24", "02/12/24");
+            repository.insert(vacation);
+            Excursion excursion= new Excursion(0, "surfing", "06/14/2024");
             repository.insert(excursion);
-            excursion = new Excursion(1, "snorkeling",25, 1);
+            excursion = new Excursion(1, "snorkeling","07/16/2024");
             repository.insert(excursion);
             return true;
         }
