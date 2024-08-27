@@ -47,4 +47,24 @@ public class Vacation {
     public String getEndDate() {
         return endDate;
     }
+
+    public void setVacationID(int vacationID) {
+        this.vacationID = vacationID;
+    }
+
+    public void setVacationName(String vacationName) {
+        this.vacationName = vacationName;
+    }
+
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 }

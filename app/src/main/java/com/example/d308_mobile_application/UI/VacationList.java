@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toolbar;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +35,7 @@ public class VacationList extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
         repository = new Repository(getApplication());
-        List<Vacation> allVacations = repository.getmALLVacations();
+        List<Vacation> allVacations = repository.getAllVacations();
         final VacationAdapter vacationAdapter = new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,7 +54,7 @@ public class VacationList extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        List<Vacation> allVacations = repository.getmALLVacations();
+        List<Vacation> allVacations = repository.getAllVacations();
         RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
         final VacationAdapter vacationAdapter = new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
@@ -67,7 +66,7 @@ public class VacationList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
 
 
-        if(item.getItemId() == R.id.sample){
+        if(item.getItemId() == R.id.addSampleVacations){
             repository=new Repository(getApplication());
             //Toast.makeText(VacationList.this,"put in sample data", Toast.LENGTH_LONG).show();
             Vacation vacation=new Vacation(0, "Italy", "Marriot", "01/15/24", "01/25/24");

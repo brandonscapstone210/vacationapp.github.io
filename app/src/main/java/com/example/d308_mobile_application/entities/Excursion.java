@@ -30,4 +30,16 @@ public class Excursion {
     public String getExcursionDate() {
         return excursionDate;
     }
+
+    public void setExcursionID(int excursionID) {
+        this.excursionID = excursionID;
+    }
+
+    public void setExcursionName(String excursionName) {
+        this.excursionName = excursionName;
+    }
+
+    public void setExcursionDate(String excursionDate) {
+        this.excursionDate = excursionDate;
+    }
 }

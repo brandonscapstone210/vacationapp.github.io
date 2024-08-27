@@ -63,10 +63,10 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
     public void onBindViewHolder (@NonNull ExcursionViewHolder holder, int position) {
         if(mExcursions!=null){
             Excursion current=mExcursions.get(position);
-            int vacationID= current.getExcursionID();
+            int excursionID= current.getExcursionID();
             String name = current.getExcursionName();
             String date = current.getExcursionDate();
-            holder.excursionItemView.setText(Integer.toString(vacationID));
+            holder.excursionItemView.setText(Integer.toString(excursionID));
             holder.excursionItemView2.setText(name);
             holder.excursionItemView3.setText(date);
         }
