@@ -65,23 +65,24 @@ public class VacationList extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
-
-        if(item.getItemId() == R.id.addSampleVacations){
-            repository=new Repository(getApplication());
-            //Toast.makeText(VacationList.this,"put in sample data", Toast.LENGTH_LONG).show();
-            Vacation vacation=new Vacation(0, "Italy", "Marriot", "01/15/24", "01/25/24");
-            repository.insert(vacation);
-            vacation = new Vacation(1, "France", "Sleepy Inn", "02/02/24", "02/12/24");
-            repository.insert(vacation);
-            Excursion excursion= new Excursion(0, "surfing", "06/14/2024");
-            repository.insert(excursion);
-            excursion = new Excursion(1, "snorkeling","07/16/2024");
-            repository.insert(excursion);
+        if(item.getItemId() == android.R.id.home){
+            this.finish();
             return true;
         }
 
-        if(item.getItemId() == android.R.id.home){
-            this.finish();
+        if (item.getItemId() == R.id.addSampleVacations) {
+            Repository repo = new Repository(getApplication());
+            Vacation vacation = new Vacation(1, "Italy", "meatball hotel", "01/04/24", "01/14/24");
+            repo.insert(vacation);
+            vacation = new Vacation(2, "France", "le hotel", "03/03/24", "03/13/24");
+            repo.insert(vacation);
+            List<Vacation> allVacations = repository.getAllVacations();
+            RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
+            final VacationAdapter vacationAdapter = new VacationAdapter(this);
+            recyclerView.setAdapter(vacationAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            vacationAdapter.setVacations(allVacations);
+
             return true;
         }
 

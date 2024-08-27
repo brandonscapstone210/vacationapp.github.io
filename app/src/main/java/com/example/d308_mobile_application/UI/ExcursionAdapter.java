@@ -14,8 +14,6 @@ import com.example.d308_mobile_application.R;
 import com.example.d308_mobile_application.entities.Excursion;
 
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.ExcursionViewHolder> {
@@ -76,7 +74,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
         }
     }
 
-    public void setParts(List<Excursion> excursions){
+    public void setExcursions(List<Excursion> excursions){
         mExcursions=excursions;
         notifyDataSetChanged();
     }

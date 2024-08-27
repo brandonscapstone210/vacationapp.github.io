@@ -132,10 +132,10 @@ public class ExcursionDetails extends AppCompatActivity {
                     excursionID = 1;
                 else
                     excursionID = repository.getAllExcursions().get(repository.getAllVacations().size() - 1).getExcursionID() + 1;
-                excursion = new Excursion(excursionID, editName.getText().toString(), editDate.getText().toString());
+                excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), editDate.getText().toString());
                 repository.insert(excursion);
             } else {
-                excursion = new Excursion(excursionID, editName.getText().toString(), editDate.getText().toString());
+                excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), editDate.getText().toString());
                 repository.update(excursion);
             }
             return true;}

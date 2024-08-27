@@ -11,11 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,7 +80,7 @@ public class VacationDetails extends AppCompatActivity {
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        excursionAdapter.setParts(repository.getAllExcursions());
+        excursionAdapter.setExcursions(repository.getAllExcursions());
 
 
 
@@ -136,6 +132,11 @@ public class VacationDetails extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+
         if (item.getItemId() == R.id.vactionsave) {
             Vacation vacation;
             if (vacationID == -1) {
@@ -153,17 +154,54 @@ public class VacationDetails extends AppCompatActivity {
             return true;
         }
 
-        if (item.getItemId() == android.R.id.home) {
-            this.finish();
+
+
+        if (item.getItemId() == R.id.vactiondelete) {
+            for (Vacation vaca : repository.getAllVacations()) {
+                if (vaca.getVacationID() == vacationID) currentVacation = vaca;
+            }
+
+            numExcursions = 0;
+            for (Excursion excursion : repository.getAllExcursions()) {
+                if (excursion.getVacationID() == vacationID) ++numExcursions;
+            }
+
+            if (numExcursions == 0) {
+                repository.delete(currentVacation);
+                Toast.makeText(VacationDetails.this, currentVacation.getVacationName() + " was deleted", Toast.LENGTH_LONG).show();
+            } else{
+                Toast.makeText(VacationDetails.this, "Can't delete a vacation with excursions", Toast.LENGTH_LONG).show();
+            }
             return true;
         }
 
-        if (item.getItemId() == R.id.vactiondelete) {
-            // ... (your delete logic)
-        }
+
 
         if (item.getItemId() == R.id.addSampleExcursions) {
-            // ... (your sample logic)
+            if (vacationID == -1)
+                Toast.makeText(VacationDetails.this, "Please save product before adding parts", Toast.LENGTH_LONG).show();
+
+            else {
+                int excurID;
+
+                if (repository.getAllExcursions().size() == 0) excurID = 1;
+                else
+                    excurID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1).getExcursionID() + 1;
+                Excursion excursion = new Excursion(excurID, vacationID, "snorkeling", "05/14/24");
+                repository.insert(excursion);
+                excursion = new Excursion(++excurID, vacationID, "hiking", "05/28/24");
+                repository.insert(excursion);
+                RecyclerView recyclerView = findViewById(R.id.excursionRecyclerView);
+                final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
+                recyclerView.setAdapter(excursionAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                List<Excursion> filteredParts = new ArrayList<>();
+                for (Excursion e : repository.getAllExcursions()) {
+                    if (e.getVacationID() == vacationID) filteredParts.add(e);
+                }
+                excursionAdapter.setExcursions(filteredParts);
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -180,6 +218,6 @@ public class VacationDetails extends AppCompatActivity {
         for (Excursion p : repository.getAllExcursions()) {
             if (p.getExcursionID() == vacationID) filteredExcursions.add(p);
         }
-        partAdapter.setParts(filteredExcursions);
+        partAdapter.setExcursions(filteredExcursions);
     }
 }
