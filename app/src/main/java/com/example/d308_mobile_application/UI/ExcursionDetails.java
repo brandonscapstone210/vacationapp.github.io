@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -134,9 +135,11 @@ public class ExcursionDetails extends AppCompatActivity {
                     excursionID = repository.getAllExcursions().get(repository.getAllVacations().size() - 1).getExcursionID() + 1;
                 excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), editDate.getText().toString());
                 repository.insert(excursion);
+                Toast.makeText(ExcursionDetails.this, "Excursion saved successfully!", Toast.LENGTH_SHORT).show();
             } else {
                 excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), editDate.getText().toString());
                 repository.update(excursion);
+                Toast.makeText(ExcursionDetails.this, "Excursion updated successfully!", Toast.LENGTH_SHORT).show();
             }
             return true;}
         if (item.getItemId()== R.id.share) {

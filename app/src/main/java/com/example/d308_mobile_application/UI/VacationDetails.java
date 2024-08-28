@@ -179,7 +179,7 @@ public class VacationDetails extends AppCompatActivity {
 
         if (item.getItemId() == R.id.addSampleExcursions) {
             if (vacationID == -1)
-                Toast.makeText(VacationDetails.this, "Please save product before adding parts", Toast.LENGTH_LONG).show();
+                Toast.makeText(VacationDetails.this, "Please save vacation before adding excursions", Toast.LENGTH_LONG).show();
 
             else {
                 int excurID;
