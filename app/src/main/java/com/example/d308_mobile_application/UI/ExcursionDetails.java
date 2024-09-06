@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class ExcursionDetails extends AppCompatActivity {
     String title;
@@ -36,11 +38,10 @@ public class ExcursionDetails extends AppCompatActivity {
     int excursionID;
     int vacationID;
     EditText editName;
-    EditText editNote;
-    TextView editDate;
+    Button excursionDateButton;
+    DatePickerDialog.OnDateSetListener myExcursionStartDate;
     Repository repository;
-    DatePickerDialog.OnDateSetListener startDate;
-    final Calendar myCalendarStart = Calendar.getInstance();
+    final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,64 +54,67 @@ public class ExcursionDetails extends AppCompatActivity {
         editName.setText(title);
         excursionID = getIntent().getIntExtra("excursionID", -1);
         vacationID = getIntent().getIntExtra("vacationID", -1);
-        editNote=findViewById(R.id.note);
-        editDate=findViewById(R.id.date);
+        excursionDateButton = findViewById(R.id.excursiondatepicker);
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-    
+
+
+        String currentDate = sdf.format(new Date());
+        excursionDateButton.setText(currentDate);
+
+
+        excursionDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date date;
+                String info = excursionDateButton.getText().toString();
+                try {
+                    myCalendar.setTime(sdf.parse(info));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                new DatePickerDialog(ExcursionDetails.this, myExcursionStartDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        myExcursionStartDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                Button selectedButton;
+                selectedButton = excursionDateButton;
+                updateStartLabel(selectedButton);
+            }
+        };
+
+
 
         ArrayList<Vacation> vacationArrayList= new ArrayList<>();
-        vacationArrayList.addAll(repository.getAllVacations());
+        try {
+            vacationArrayList.addAll(repository.getAllVacations());
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         ArrayList<Integer> vacationIDlist = new ArrayList<>();
         for(Vacation vacation:vacationArrayList){
             vacationIDlist.add(vacation.getVacationID());
         }
-        ArrayAdapter<Integer> vacationIdAdapter= new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item,vacationIDlist);
-        Spinner spinner=findViewById(R.id.spinner);
-        spinner.setAdapter(vacationIdAdapter);
-
-        startDate = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // TODO Auto-generated method stub
-
-                myCalendarStart.set(Calendar.YEAR, year);
-                myCalendarStart.set(Calendar.MONTH, monthOfYear);
-                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
 
-                updateLabelStart();
-            }
 
-        };
 
-        editDate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Date date;
-                //get value from other screen,but I'm going to hard code it right now
-                String info=editDate.getText().toString();
-                if(info.equals(""))info="02/10/22";
-                try{
-                    myCalendarStart.setTime(sdf.parse(info));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                new DatePickerDialog(ExcursionDetails.this, startDate, myCalendarStart
-                        .get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH),
-                        myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
 
     }
-    private void updateLabelStart() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        editDate.setText(sdf.format(myCalendarStart.getTime()));
+
+    private void updateStartLabel(Button selectedButton) {
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        selectedButton.setText(sdf.format(myCalendar.getTime()));
     }
 
 
@@ -129,15 +133,21 @@ public class ExcursionDetails extends AppCompatActivity {
         if (item.getItemId()== R.id.excursionsave){
             Excursion excursion;
             if (excursionID == -1) {
-                if (repository.getAllVacations().size() == 0)
-                    excursionID = 1;
-                else
-                    excursionID = repository.getAllExcursions().get(repository.getAllVacations().size() - 1).getExcursionID() + 1;
-                excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), editDate.getText().toString());
+                try {
+                    if (repository.getAllVacations().size() == 0)
+                        excursionID = 1;
+                    else
+                        excursionID = repository.getAllExcursions().get(repository.getAllVacations().size() - 1).getExcursionID() + 1;
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), excursionDateButton.getText().toString());
                 repository.insert(excursion);
                 Toast.makeText(ExcursionDetails.this, "Excursion saved successfully!", Toast.LENGTH_SHORT).show();
             } else {
-                excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), editDate.getText().toString());
+                excursion = new Excursion(excursionID, vacationID, editName.getText().toString(), excursionDateButton.getText().toString());
                 repository.update(excursion);
                 Toast.makeText(ExcursionDetails.this, "Excursion updated successfully!", Toast.LENGTH_SHORT).show();
             }
@@ -145,7 +155,6 @@ public class ExcursionDetails extends AppCompatActivity {
         if (item.getItemId()== R.id.share) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, editNote.getText().toString());
             sendIntent.putExtra(Intent.EXTRA_TITLE, "Message Title");
             sendIntent.setType("text/plain");
             Intent shareIntent = Intent.createChooser(sendIntent, null);
@@ -153,7 +162,7 @@ public class ExcursionDetails extends AppCompatActivity {
             return true;
         }
         if(item.getItemId()== R.id.notify) {
-            String dateFromScreen = editDate.getText().toString();
+            String dateFromScreen = excursionDateButton.getText().toString();
             String myFormat = "MM/dd/yy"; //In which you need put here
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
             Date myDate = null;

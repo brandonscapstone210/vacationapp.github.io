@@ -28,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 public class VacationDetails extends AppCompatActivity {
     int vacationID;
@@ -44,9 +45,8 @@ public class VacationDetails extends AppCompatActivity {
     Repository repository;
     Button startDateButton;
     Button endDateButton;
-    DatePickerDialog.OnDateSetListener myDate;
-    DatePickerDialog startDatePickerDialog;
-    DatePickerDialog endDatePickerDialog;
+    DatePickerDialog.OnDateSetListener myStartDate;
+    DatePickerDialog.OnDateSetListener myEndDate;
     final Calendar myCalendar = Calendar.getInstance();
 
     @Override
@@ -69,6 +69,7 @@ public class VacationDetails extends AppCompatActivity {
 
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+            intent.putExtra("vacationID", vacationID);
             startActivity(intent);
         });
 
@@ -77,8 +78,13 @@ public class VacationDetails extends AppCompatActivity {
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        excursionAdapter.setExcursions(repository.getAllExcursions());
-
+        try {
+            excursionAdapter.setExcursions(repository.getAllExcursions());
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
 
         startDateButton = findViewById(R.id.startdatepicker);
@@ -99,7 +105,7 @@ public class VacationDetails extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                new DatePickerDialog(VacationDetails.this, myDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(VacationDetails.this, myStartDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -113,32 +119,46 @@ public class VacationDetails extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                new DatePickerDialog(VacationDetails.this, myDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(VacationDetails.this, myEndDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
 
 
-        myDate = new DatePickerDialog.OnDateSetListener() {
+        myStartDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 Button selectedButton;
-                if (datePicker == startDateButton.getParent()) {
-                    selectedButton = startDateButton;
-                } else {
-                    selectedButton = endDateButton;
-                }
-                updateLabel(selectedButton);
+                selectedButton = startDateButton;
+                updateStartLabel(selectedButton);
+            }
+        };
+
+        myEndDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                Button selectedButton;
+                selectedButton = endDateButton;
+                updateEndLabel(selectedButton);
             }
         };
 
     }
 
 
-    private void updateLabel(Button selectedButton) {
+    private void updateStartLabel(Button selectedButton) {
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        selectedButton.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    private void updateEndLabel(Button selectedButton) {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         selectedButton.setText(sdf.format(myCalendar.getTime()));
@@ -159,9 +179,15 @@ public class VacationDetails extends AppCompatActivity {
         if (item.getItemId() == R.id.vactionsave) {
             Vacation vacation;
             if (vacationID == -1) {
-                if (repository.getAllVacations().size() == 0) vacationID = 1;
-                else
-                    vacationID = repository.getAllVacations().get(repository.getAllVacations().size() - 1).getVacationID() + 1;
+                try {
+                    if (repository.getAllVacations().size() == 0) vacationID = 1;
+                    else
+                        vacationID = repository.getAllVacations().get(repository.getAllVacations().size() - 1).getVacationID() + 1;
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 vacation = new Vacation(vacationID, editTitle.getText().toString(), editHotel.getText().toString(), startDateButton.getText().toString(), endDateButton.getText().toString());
                 repository.insert(vacation);
                 Toast.makeText(VacationDetails.this, "Vacation saved successfully!", Toast.LENGTH_SHORT).show();
@@ -176,13 +202,25 @@ public class VacationDetails extends AppCompatActivity {
 
 
         if (item.getItemId() == R.id.vactiondelete) {
-            for (Vacation vaca : repository.getAllVacations()) {
-                if (vaca.getVacationID() == vacationID) currentVacation = vaca;
+            try {
+                for (Vacation vaca : repository.getAllVacations()) {
+                    if (vaca.getVacationID() == vacationID) currentVacation = vaca;
+                }
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
             numExcursions = 0;
-            for (Excursion excursion : repository.getAllExcursions()) {
-                if (excursion.getVacationID() == vacationID) ++numExcursions;
+            try {
+                for (Excursion excursion : repository.getAllExcursions()) {
+                    if (excursion.getVacationID() == vacationID) ++numExcursions;
+                }
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
 
             if (numExcursions == 0) {
@@ -203,9 +241,15 @@ public class VacationDetails extends AppCompatActivity {
             else {
                 int excurID;
 
-                if (repository.getAllExcursions().size() == 0) excurID = 1;
-                else
-                    excurID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1).getExcursionID() + 1;
+                try {
+                    if (repository.getAllExcursions().size() == 0) excurID = 1;
+                    else
+                        excurID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1).getExcursionID() + 1;
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 Excursion excursion = new Excursion(excurID, vacationID, "snorkeling", "05/14/24");
                 repository.insert(excursion);
                 excursion = new Excursion(++excurID, vacationID, "hiking", "05/28/24");
@@ -215,8 +259,14 @@ public class VacationDetails extends AppCompatActivity {
                 recyclerView.setAdapter(excursionAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 List<Excursion> filteredParts = new ArrayList<>();
-                for (Excursion e : repository.getAllExcursions()) {
-                    if (e.getVacationID() == vacationID) filteredParts.add(e);
+                try {
+                    for (Excursion e : repository.getAllExcursions()) {
+                        if (e.getVacationID() == vacationID) filteredParts.add(e);
+                    }
+                } catch (ExecutionException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
                 excursionAdapter.setExcursions(filteredParts);
                 return true;
@@ -234,8 +284,14 @@ public class VacationDetails extends AppCompatActivity {
         recyclerView.setAdapter(partAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Excursion> filteredExcursions = new ArrayList<>();
-        for (Excursion p : repository.getAllExcursions()) {
-            if (p.getExcursionID() == vacationID) filteredExcursions.add(p);
+        try {
+            for (Excursion p : repository.getAllExcursions()) {
+                if (p.getExcursionID() == vacationID) filteredExcursions.add(p);
+            }
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         partAdapter.setExcursions(filteredExcursions);
     }

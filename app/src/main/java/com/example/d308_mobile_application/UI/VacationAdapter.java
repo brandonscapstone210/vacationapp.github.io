@@ -16,20 +16,11 @@ import com.example.d308_mobile_application.entities.Vacation;
 import java.util.List;
 
 public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.VacationViewHolder> {
-    private List<Vacation> mVacations;
-    private final Context context;
 
-    private final LayoutInflater mInflater;
-    public VacationAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
-        this.context = context;
-    }
-
-
-    public class VacationViewHolder extends RecyclerView.ViewHolder{
+    class VacationViewHolder extends RecyclerView.ViewHolder {
         private final TextView vacationItemView;
 
-        public VacationViewHolder(@NonNull View itemView) {
+        private VacationViewHolder(View itemView) {
             super(itemView);
             vacationItemView = itemView.findViewById(R.id.textView);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -49,36 +40,43 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         }
     }
 
+    private List<Vacation> mVacations;
+    private final Context context;
+    private final LayoutInflater mInflater;
+
+    public VacationAdapter(Context context) {
+        mInflater = LayoutInflater.from(context);
+        this.context = context;
+    }
+
     @NonNull
     @Override
-    public VacationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VacationViewHolder onCreateViewHolder (@NonNull ViewGroup parent,int viewType){
         View itemView = mInflater.inflate(R.layout.vacation_list_item, parent, false);
         return new VacationViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VacationViewHolder holder, int position) {
-        if(mVacations != null){
+    public void onBindViewHolder (@NonNull VacationViewHolder holder,int position){
+        if (mVacations != null) {
             Vacation current = mVacations.get(position);
             String name = current.getVacationName();
             holder.vacationItemView.setText(name);
-        }
-        else {
+        } else {
             holder.vacationItemView.setText("No vacation name");
         }
     }
 
-    @Override
-    public int getItemCount() {
-        if(mVacations != null){
-            return mVacations.size();
-        }
-        else return  0;
-    }
-
-    public void setVacations(List<Vacation> vacations){
+    public void setVacations (List<Vacation> vacations) {
         mVacations = vacations;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount () {
+        if (mVacations != null) {
+            return mVacations.size();
+        } else return 0;
     }
 
 }

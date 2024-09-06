@@ -30,92 +30,40 @@ public class Repository {
         mExcursionDAO = db.excursionDAO();
         mVacationDAO = db.vacationDAO();
     }
-    public List<Vacation>getAllVacations(){
-        databaseExecutor.execute(()->{
-            mAllVacations=mVacationDAO.getAllVacations();
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return mAllVacations;
-    }
-    public void insert(Vacation vacation){
-        databaseExecutor.execute(()->{
-            mVacationDAO.insert(vacation);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public void update(Vacation vacation){
-        databaseExecutor.execute(()->{
-            mVacationDAO.update(vacation);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public void delete(Vacation vacation){
-        databaseExecutor.execute(()->{
-            mVacationDAO.delete(vacation);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public List<Excursion>getAllExcursions(){
-        databaseExecutor.execute(()->{
-            mAllExcursions=mExcursionDAO.getAllExcursions();
-        });
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return mAllExcursions;
-    }
-    public void insert(Excursion excursion){
-        databaseExecutor.execute(()->{
-            mExcursionDAO.insert(excursion);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public void update(Excursion excursion){
-        databaseExecutor.execute(()->{
-            mExcursionDAO.update(excursion);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    public void delete(Excursion excursion){
-        databaseExecutor.execute(()->{
-            mExcursionDAO.delete(excursion);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public List<Vacation> getAllVacations() throws ExecutionException, InterruptedException {
+        return databaseExecutor.submit(mVacationDAO::getAllVacations).get();
     }
 
+    public List<Excursion> getAllExcursions() throws ExecutionException, InterruptedException {
+        return databaseExecutor.submit(mExcursionDAO::getAllExcursions).get();
+    }
+
+    public void insert(Vacation vacation) {
+        databaseExecutor.execute(() -> mVacationDAO.insert(vacation));
+    }
+
+    public void insert(Excursion excursion) {
+        databaseExecutor.execute(() -> mExcursionDAO.insert(excursion));
+    }
+
+    public void update(Vacation vacation) {
+        databaseExecutor.execute(() -> mVacationDAO.update(vacation));
+    }
+
+    public void update(Excursion excursion) {
+        databaseExecutor.execute(() -> mExcursionDAO.update(excursion));
+    }
+
+    public void delete(Vacation vacation) {
+        databaseExecutor.execute(() -> mVacationDAO.delete(vacation));
+    }
+
+    public void delete(Excursion excursion) {
+        databaseExecutor.execute(() -> mExcursionDAO.delete(excursion));
+    }
 }
+
+
 //    private final ExcursionDAO mExcursionDAO;
 //    private final VacationDAO mVacationDAO;
 //

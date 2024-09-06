@@ -31,7 +31,7 @@ public class ExcursionAdapter extends RecyclerView.Adapter<ExcursionAdapter.Excu
                     @Override
                     public void onClick(View view) {
                         int position = getAdapterPosition();
-                        final Excursion current =mExcursions.get(position);
+                        final Excursion current = mExcursions.get(position);
                         Intent intent = new Intent(context, ExcursionDetails.class);
                         intent.putExtra("excursionID", current.getExcursionID());
                         intent.putExtra("excursionName", current.getExcursionName());

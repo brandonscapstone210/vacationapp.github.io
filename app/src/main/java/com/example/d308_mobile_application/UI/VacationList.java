@@ -18,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.example.d308_mobile_application.R;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class VacationList extends AppCompatActivity {
@@ -35,7 +36,14 @@ public class VacationList extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
         repository = new Repository(getApplication());
-        List<Vacation> allVacations = repository.getAllVacations();
+        List<Vacation> allVacations = null;
+        try {
+            allVacations = repository.getAllVacations();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         final VacationAdapter vacationAdapter = new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +62,14 @@ public class VacationList extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        List<Vacation> allVacations = repository.getAllVacations();
+        List<Vacation> allVacations = null;
+        try {
+            allVacations = repository.getAllVacations();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
         final VacationAdapter vacationAdapter = new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
@@ -76,7 +91,14 @@ public class VacationList extends AppCompatActivity {
             repo.insert(vacation);
             vacation = new Vacation(2, "France", "le hotel", "03/03/24", "03/13/24");
             repo.insert(vacation);
-            List<Vacation> allVacations = repository.getAllVacations();
+            List<Vacation> allVacations = null;
+            try {
+                allVacations = repository.getAllVacations();
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
             final VacationAdapter vacationAdapter = new VacationAdapter(this);
             recyclerView.setAdapter(vacationAdapter);
