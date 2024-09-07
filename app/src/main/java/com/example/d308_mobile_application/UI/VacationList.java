@@ -34,16 +34,14 @@ public class VacationList extends AppCompatActivity {
             startActivity(intent);
         });
 
-        RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
         repository = new Repository(getApplication());
         List<Vacation> allVacations = null;
         try {
             allVacations = repository.getAllVacations();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
         final VacationAdapter vacationAdapter = new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,23 +57,6 @@ public class VacationList extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        List<Vacation> allVacations = null;
-        try {
-            allVacations = repository.getAllVacations();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
-        final VacationAdapter vacationAdapter = new VacationAdapter(this);
-        recyclerView.setAdapter(vacationAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        vacationAdapter.setVacations(allVacations);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -109,6 +90,22 @@ public class VacationList extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        List<Vacation> allVacations = null;
+        try {
+            allVacations = repository.getAllVacations();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);
+        final VacationAdapter vacationAdapter = new VacationAdapter(this);
+        recyclerView.setAdapter(vacationAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vacationAdapter.setVacations(allVacations);
     }
 
 }

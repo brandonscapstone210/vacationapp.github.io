@@ -152,15 +152,7 @@ public class ExcursionDetails extends AppCompatActivity {
                 Toast.makeText(ExcursionDetails.this, "Excursion updated successfully!", Toast.LENGTH_SHORT).show();
             }
             return true;}
-        if (item.getItemId()== R.id.share) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TITLE, "Message Title");
-            sendIntent.setType("text/plain");
-            Intent shareIntent = Intent.createChooser(sendIntent, null);
-            startActivity(shareIntent);
-            return true;
-        }
+
         if(item.getItemId()== R.id.notify) {
             String dateFromScreen = excursionDateButton.getText().toString();
             String myFormat = "MM/dd/yy"; //In which you need put here

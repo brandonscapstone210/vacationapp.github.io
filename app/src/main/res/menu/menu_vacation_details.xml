@@ -6,4 +6,11 @@
         android:id = "@+id/vactiondelete"/>
     <item android:title="Add Sample Excursions"
         android:id="@+id/addSampleExcursions"/>
+    <item android:title="Share Details"
+        android:orderInCategory="100"
+        android:id="@+id/share"/>
+    <item android:title="Notify"
+        android:orderInCategory="100"
+        android:id="@+id/notifyvaca"/>
 </menu>
+

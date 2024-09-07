@@ -20,11 +20,13 @@
             android:name=".UI.ExcursionDetails"
             android:exported="false"
             android:label="Excursion Details"
+            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName=".UI.VacationDetails" />
         <activity
             android:name=".UI.VacationDetails"
             android:exported="false"
             android:label="Vacation Details and Excursion List"
+            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName=".UI.VacationList" />
 
         <meta-data

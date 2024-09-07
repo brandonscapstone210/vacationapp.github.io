@@ -1,6 +1,9 @@
 package com.example.d308_mobile_application.UI;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -206,9 +209,7 @@ public class VacationDetails extends AppCompatActivity {
                 for (Vacation vaca : repository.getAllVacations()) {
                     if (vaca.getVacationID() == vacationID) currentVacation = vaca;
                 }
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
@@ -217,9 +218,7 @@ public class VacationDetails extends AppCompatActivity {
                 for (Excursion excursion : repository.getAllExcursions()) {
                     if (excursion.getVacationID() == vacationID) ++numExcursions;
                 }
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
@@ -258,19 +257,65 @@ public class VacationDetails extends AppCompatActivity {
                 final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
                 recyclerView.setAdapter(excursionAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                List<Excursion> filteredParts = new ArrayList<>();
+                List<Excursion> filteredExcursions = new ArrayList<>();
                 try {
                     for (Excursion e : repository.getAllExcursions()) {
-                        if (e.getVacationID() == vacationID) filteredParts.add(e);
+                        if (e.getVacationID() == vacationID) filteredExcursions.add(e);
                     }
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                excursionAdapter.setExcursions(filteredParts);
+                excursionAdapter.setExcursions(filteredExcursions);
                 return true;
             }
+
+            if(item.getItemId()== R.id.notify) {
+                String dateFromScreen = startDateButton.getText().toString();
+                String myFormat = "MM/dd/yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                Date myDate = null;
+                try {
+                    myDate = sdf.parse(dateFromScreen);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try{
+                    Long trigger = myDate.getTime();
+                    Intent intent = new Intent(VacationDetails.this, MyReceiver.class);
+                    intent.putExtra("key", "message I want to see");
+                    PendingIntent sender = PendingIntent.getBroadcast(VacationDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);}
+                catch (Exception e){
+
+                }
+                return true;
+            }
+
+            if (item.getItemId()== R.id.share) {
+                String vacationDetails = "Vacation Title: " + vacationName + "\n" + "Hotel: " + hotelName + "\n" + "Dates: " + startDateButton.getText().toString() + " - " + endDateButton.getText().toString() + "\n" + "Excursions: \n";
+                try {
+                    List<Excursion> excursions = repository.getAllExcursions();
+                    for (Excursion excursion : excursions) {
+                        vacationDetails += "- " + excursion.getExcursionName() + " on " + excursion.getExcursionDate() + "\n";
+                        }
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, vacationDetails);
+                sendIntent.putExtra(Intent.EXTRA_TITLE, vacationName);
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+                return true;
+
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -280,19 +325,17 @@ public class VacationDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         RecyclerView recyclerView = findViewById(R.id.excursionRecyclerView);
-        final ExcursionAdapter partAdapter = new ExcursionAdapter(this);
-        recyclerView.setAdapter(partAdapter);
+        final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
+        recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<Excursion> filteredExcursions = new ArrayList<>();
         try {
             for (Excursion p : repository.getAllExcursions()) {
-                if (p.getExcursionID() == vacationID) filteredExcursions.add(p);
+                if (p.getVacationID() == vacationID) filteredExcursions.add(p);
             }
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        partAdapter.setExcursions(filteredExcursions);
+        excursionAdapter.setExcursions(filteredExcursions);
     }
 }
