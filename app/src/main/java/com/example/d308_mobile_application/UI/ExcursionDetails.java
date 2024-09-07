@@ -34,6 +34,7 @@ public class ExcursionDetails extends AppCompatActivity {
     String excursionDate;
     int excursionID;
     int vacationID;
+    String selectedStartVacationDate;
     EditText editName;
     Button excursionDateButton;
     DatePickerDialog.OnDateSetListener myExcursionStartDate;
@@ -54,6 +55,7 @@ public class ExcursionDetails extends AppCompatActivity {
         excursionID = getIntent().getIntExtra("excursionID", -1);
         vacationID = getIntent().getIntExtra("vacationID", -1);
         excursionDateButton = findViewById(R.id.excursiondatepicker);
+        //selectedStartVacationDate = getIntent().putExtra("startDate");
 
         excursionDate = getIntent().getStringExtra("excursionDate");
         if (excursionDate != null) {
@@ -73,7 +75,14 @@ public class ExcursionDetails extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                new DatePickerDialog(ExcursionDetails.this, myExcursionStartDate, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dpd = new DatePickerDialog(ExcursionDetails.this, myExcursionStartDate,
+                        myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)
+                );
+                //dpd.getDatePicker().setMinDate();
+                //dpd.getDatePicker().setMaxDate();
+
+                dpd.show();
             }
         });
 
