@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.d308_mobile_application.database.Repository;
-import com.example.d308_mobile_application.entities.Excursion;
 import com.example.d308_mobile_application.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -75,9 +74,7 @@ public class VacationList extends AppCompatActivity {
             List<Vacation> allVacations = null;
             try {
                 allVacations = repository.getAllVacations();
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
             RecyclerView recyclerView = findViewById(R.id.vacationRecyclerView);

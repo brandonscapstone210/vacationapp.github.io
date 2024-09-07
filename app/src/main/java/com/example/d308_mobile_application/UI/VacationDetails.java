@@ -50,9 +50,10 @@ public class VacationDetails extends AppCompatActivity {
     Button endDateButton;
     DatePickerDialog.OnDateSetListener myStartDate;
     DatePickerDialog.OnDateSetListener myEndDate;
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
     final Calendar myCalendar = Calendar.getInstance();
-    Date selectedStartDate = new Date();
-    Date selectedEndDate = selectedStartDate;
+    Date selectedStartDate;
+    Date selectedEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +61,12 @@ public class VacationDetails extends AppCompatActivity {
         setContentView(R.layout.activity_vacation_details);
         FloatingActionButton fab=findViewById(R.id.floatingActionButton2);
 
-        editTitle= findViewById(R.id.vacationText);
+        editTitle = findViewById(R.id.vacationText);
         editHotel = findViewById(R.id.hotelText);
 
 
         vacationName = getIntent().getStringExtra("vacationName");
+        vacationID = getIntent().getIntExtra("vacationID", -1);
         hotelName = getIntent().getStringExtra("hotelName");
 
 
@@ -94,11 +96,27 @@ public class VacationDetails extends AppCompatActivity {
 
         startDateButton = findViewById(R.id.startdatepicker);
         endDateButton = findViewById(R.id.enddatepicker);
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        String currentDate = sdf.format(new Date());
-        startDateButton.setText(currentDate);
-        endDateButton.setText(currentDate);
+        try {
+            String value = getIntent().getStringExtra("startDate");
+            if (value != null) {
+                selectedStartDate = sdf.parse(value);
+                startDateButton.setText(value);
+            }
+        } catch (ParseException e) {
+            selectedStartDate = new Date();
+            startDateButton.setText(sdf.format(selectedStartDate));
+        }
+
+        try {
+            String value = getIntent().getStringExtra("endDate");
+            if (value != null) {
+                selectedEndDate = sdf.parse(value);
+                endDateButton.setText(value);
+            }
+        } catch (ParseException e) {
+            selectedEndDate = selectedStartDate;
+            endDateButton.setText(sdf.format(selectedEndDate));
+        }
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +127,7 @@ public class VacationDetails extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                DatePickerDialog dpd =  new DatePickerDialog(VacationDetails.this, myEndDate,
+                DatePickerDialog dpd =  new DatePickerDialog(VacationDetails.this, myStartDate,
                         myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)
                 );
@@ -167,8 +185,6 @@ public class VacationDetails extends AppCompatActivity {
 
 
     private void updateLabel(Button selectedButton) {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         selectedButton.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -281,8 +297,6 @@ public class VacationDetails extends AppCompatActivity {
 
             if(item.getItemId()== R.id.notify) {
                 String dateFromScreen = startDateButton.getText().toString();
-                String myFormat = "MM/dd/yy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 Date myDate = null;
                 try {
                     myDate = sdf.parse(dateFromScreen);

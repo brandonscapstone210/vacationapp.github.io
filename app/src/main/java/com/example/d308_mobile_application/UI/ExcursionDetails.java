@@ -9,12 +9,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +31,7 @@ import java.util.concurrent.ExecutionException;
 
 public class ExcursionDetails extends AppCompatActivity {
     String title;
-    String excursiondate;
+    String excursionDate;
     int excursionID;
     int vacationID;
     EditText editName;
@@ -42,6 +39,8 @@ public class ExcursionDetails extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener myExcursionStartDate;
     Repository repository;
     final Calendar myCalendar = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +48,25 @@ public class ExcursionDetails extends AppCompatActivity {
         setContentView(R.layout.activity_excursion_details);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         repository=new Repository(getApplication());
-        title = getIntent().getStringExtra("title");
+        title = getIntent().getStringExtra("excursionName");
         editName = findViewById(R.id.excursionTitle);
         editName.setText(title);
         excursionID = getIntent().getIntExtra("excursionID", -1);
         vacationID = getIntent().getIntExtra("vacationID", -1);
         excursionDateButton = findViewById(R.id.excursiondatepicker);
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
+        excursionDate = getIntent().getStringExtra("excursionDate");
+        if (excursionDate != null) {
+            excursionDateButton.setText(excursionDate);
+        } else {
+            excursionDateButton.setText(sdf.format(new Date()));
+        }
 
-        String currentDate = sdf.format(new Date());
-        excursionDateButton.setText(currentDate);
 
 
         excursionDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Date date;
                 String info = excursionDateButton.getText().toString();
                 try {
                     myCalendar.setTime(sdf.parse(info));
@@ -80,12 +80,8 @@ public class ExcursionDetails extends AppCompatActivity {
         myExcursionStartDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                Button selectedButton;
-                selectedButton = excursionDateButton;
-                updateStartLabel(selectedButton);
+                myCalendar.set(year, monthOfYear, dayOfMonth);
+                updateStartLabel(excursionDateButton);
             }
         };
 
@@ -112,8 +108,6 @@ public class ExcursionDetails extends AppCompatActivity {
 
 
     private void updateStartLabel(Button selectedButton) {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         selectedButton.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -134,10 +128,10 @@ public class ExcursionDetails extends AppCompatActivity {
             Excursion excursion;
             if (excursionID == -1) {
                 try {
-                    if (repository.getAllVacations().size() == 0)
+                    if (repository.getAllExcursions().size() == 0)
                         excursionID = 1;
                     else
-                        excursionID = repository.getAllExcursions().get(repository.getAllVacations().size() - 1).getExcursionID() + 1;
+                        excursionID = repository.getAllExcursions().get(repository.getAllExcursions().size() - 1).getExcursionID() + 1;
                 } catch (ExecutionException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
@@ -153,10 +147,16 @@ public class ExcursionDetails extends AppCompatActivity {
             }
             return true;}
 
+        if (item.getItemId() == R.id.excursiondelete) {
+            Excursion currentExcursion = new Excursion(excursionID, vacationID, title, excursionDate);
+
+            repository.delete(currentExcursion);
+            Toast.makeText(ExcursionDetails.this, currentExcursion.getExcursionName() + " was deleted", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
         if(item.getItemId()== R.id.notify) {
             String dateFromScreen = excursionDateButton.getText().toString();
-            String myFormat = "MM/dd/yy"; //In which you need put here
-            SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
             Date myDate = null;
             try {
                 myDate = sdf.parse(dateFromScreen);
