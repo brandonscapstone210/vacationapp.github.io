@@ -34,6 +34,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+
+//Adding Commit message Changes: Included CRUD options for vacations. Added delete validation
+// warning.| Files: VacationDetails.java    | lines: Save/update = 211-236,
+// create new vacation = 78-83.
+
 public class VacationDetails extends AppCompatActivity {
     int vacationID;
     String vacationName;
@@ -69,6 +74,7 @@ public class VacationDetails extends AppCompatActivity {
         vacationName = getIntent().getStringExtra("vacationName");
         vacationID = getIntent().getIntExtra("vacationID", -1);
         hotelName = getIntent().getStringExtra("hotelName");
+
 
 
         editTitle.setText(vacationName);
