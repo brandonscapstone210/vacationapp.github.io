@@ -39,6 +39,13 @@ import java.util.concurrent.ExecutionException;
 // warning.| Files: VacationDetails.java    | lines: Save/update = 211-236,
 // create new vacation = 78-83.
 
+
+//Task B2
+//Changes:  Added layout and logic for Vacation title, hotel, start, and end date.  |
+//Files:  VacationDetails.java, activity_excursion_details.xml   |
+//lines: VacationDetails.java = 50-58, 70-91, 80, 227, 236 / activity_vacation_details.xml= 48-54,
+//        66-72, 83-89, 102-108
+
 public class VacationDetails extends AppCompatActivity {
     int vacationID;
     String vacationName;

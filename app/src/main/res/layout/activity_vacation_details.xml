@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".UI.VacationDetails">
 
+<!-- Task B2-->
+<!--    Changes:  Added layout and logic for Vacation title, hotel, start, and end date.  |-->
+<!--    Files:  VacationDetails.java, activity_excursion_details.xml   |-->
+<!--    lines: VacationDetails.java = 50-58, 70-91, 80, 227, 236 / activity_vacation_details.xml= 48-54,-->
+<!--    66-72, 83-89, 102-108-->
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton2"
