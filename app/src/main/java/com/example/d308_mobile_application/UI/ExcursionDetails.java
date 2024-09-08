@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class ExcursionDetails extends AppCompatActivity {
-    String title;
+    String excursionTitle;
     String excursionDate;
     int excursionID;
     int vacationID;
@@ -47,16 +47,16 @@ public class ExcursionDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_excursion_details);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         repository=new Repository(getApplication());
-        title = getIntent().getStringExtra("excursionName");
-        editName = findViewById(R.id.excursionTitle);
-        editName.setText(title);
+
+        excursionTitle = getIntent().getStringExtra("excursionName");
+        editName = findViewById(R.id.excursion_title);
+        editName.setText(excursionTitle);
+
         excursionID = getIntent().getIntExtra("excursionID", -1);
         vacationID = getIntent().getIntExtra("vacationID", -1);
-        excursionDateButton = findViewById(R.id.excursiondatepicker);
-        //selectedStartVacationDate = getIntent().putExtra("startDate");
 
+        excursionDateButton = findViewById(R.id.excursion_date_picker);
         excursionDate = getIntent().getStringExtra("excursionDate");
         if (excursionDate != null) {
             excursionDateButton.setText(excursionDate);
@@ -64,6 +64,8 @@ public class ExcursionDetails extends AppCompatActivity {
             excursionDateButton.setText(sdf.format(new Date()));
         }
 
+        String vacationStart = getIntent().getStringExtra("vacationStart");
+        String vacationEnd = getIntent().getStringExtra("vacationEnd");
 
 
         excursionDateButton.setOnClickListener(new View.OnClickListener() {
@@ -79,9 +81,25 @@ public class ExcursionDetails extends AppCompatActivity {
                         myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)
                 );
-                //dpd.getDatePicker().setMinDate();
-                //dpd.getDatePicker().setMaxDate();
+                if (vacationStart != null){
+                    try {
+                        dpd.getDatePicker().setMinDate(sdf.parse(vacationStart).getTime());
+                    } catch (ParseException e) {
+                        dpd.getDatePicker().setMinDate(new Date().getTime());
+                    }
+                } else{
+                    dpd.getDatePicker().setMinDate(new Date().getTime());
+                }
 
+                if (vacationEnd != null){
+                    try {
+                        dpd.getDatePicker().setMaxDate(sdf.parse(vacationEnd).getTime());
+                    } catch (ParseException e) {
+                        dpd.getDatePicker().setMaxDate(new Date().getTime());
+                    }
+                } else{
+                    dpd.getDatePicker().setMaxDate(new Date().getTime());
+                }
                 dpd.show();
             }
         });
@@ -157,31 +175,31 @@ public class ExcursionDetails extends AppCompatActivity {
             return true;}
 
         if (item.getItemId() == R.id.excursiondelete) {
-            Excursion currentExcursion = new Excursion(excursionID, vacationID, title, excursionDate);
+            Excursion currentExcursion = new Excursion(excursionID, vacationID, excursionTitle, excursionDate);
 
             repository.delete(currentExcursion);
             Toast.makeText(ExcursionDetails.this, currentExcursion.getExcursionName() + " was deleted", Toast.LENGTH_LONG).show();
             return true;
         }
 
-        if(item.getItemId()== R.id.notify) {
+        if(item.getItemId()== R.id.notify_excursion) {
             String dateFromScreen = excursionDateButton.getText().toString();
             Date myDate = null;
             try {
                 myDate = sdf.parse(dateFromScreen);
+                if (myDate != null) {
+                    long trigger = myDate.getTime();
+                    Intent intent = new Intent(ExcursionDetails.this, MyReceiver.class);
+                    intent.putExtra("notifyExcursion", String.format("Your %s excursion is starting.", excursionTitle));
+                    PendingIntent sender = PendingIntent.getBroadcast(ExcursionDetails.this,
+                            ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            try{
-                Long trigger = myDate.getTime();
-                Intent intent = new Intent(ExcursionDetails.this, MyReceiver.class);
-                intent.putExtra("key", "message I want to see");
-                PendingIntent sender = PendingIntent.getBroadcast(ExcursionDetails.this, ++MainActivity.numAlert, intent, PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, trigger, sender);}
-            catch (Exception e){
 
-            }
             return true;
         }
 

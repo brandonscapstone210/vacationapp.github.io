@@ -27,17 +27,26 @@ public class MyReceiver extends BroadcastReceiver {
 
 
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, intent.getStringExtra("key"), Toast.LENGTH_LONG).show();
+        if (intent.hasExtra("notifyExcursion")){
+            Toast.makeText(context, intent.getStringExtra("notifyExcursion"), Toast.LENGTH_LONG).show();
+        }
+        if (intent.hasExtra("notifyVacationStart")){
+            Toast.makeText(context, intent.getStringExtra("notifyVacationStart"), Toast.LENGTH_LONG).show();
+        }
+        if (intent.hasExtra("notifyVacationEnd")){
+            Toast.makeText(context, intent.getStringExtra("notifyVacationEnd"), Toast.LENGTH_LONG).show();
+        }
+
+
         createNotificationChannel(context, channel_id);
         Notification n = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentText(intent.getStringExtra("key"))
-                .setContentTitle("NotifcationTest").build();
+                .setContentText(intent.getStringExtra("notifyVacationStart"))
+                .setContentTitle("Vacation Notification").build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(notificationID++, n);
     }
-    // TODO: This method is called when the BroadcastReceiver is receiving
-    // an Intent broadcast.
+
 
 
     private void createNotificationChannel(Context context, String CHANNEL_ID) {

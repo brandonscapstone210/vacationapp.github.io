@@ -6,5 +6,5 @@
         android:id="@+id/excursiondelete"/>
     <item android:title="Notify"
         android:orderInCategory="100"
-        android:id="@+id/notify"/>
+        android:id="@+id/notify_excursion"/>
 </menu>
