@@ -29,6 +29,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+//Task B4
+//Changes:  Added excursion title and datepicker options. Fully functional.   |
+//Files: ExcursionDetails.java, activity_excursion_details.xml    |
+//lines: activity_excursion_details.xml = Title: 23-30 , Date : 34-46 /
+//ExcursionDetails.java = Title = 53-54, 167, 171. Date = 59-60, 71-106, 107-114
+
 public class ExcursionDetails extends AppCompatActivity {
     String excursionTitle;
     String excursionDate;
