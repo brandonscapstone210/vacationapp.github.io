@@ -46,6 +46,13 @@ import java.util.concurrent.ExecutionException;
 //lines: VacationDetails.java = 50-58, 70-91, 80, 227, 236 / activity_vacation_details.xml= 48-54,
 //        66-72, 83-89, 102-108
 
+
+//Task B3
+//Changes: Included CRUD, Notify, Validation, and share features   | Files: VacationDetails.java,
+//myReceiver.java, menu_vacation_details.xml    | lines: menu_vacation_details = 320-356 /
+//myReceiver.java = All lines / VacationDetails.java = notify: 320-356, Share: 357 - 381 / Validation = 97-138
+
+
 public class VacationDetails extends AppCompatActivity {
     int vacationID;
     String vacationName;

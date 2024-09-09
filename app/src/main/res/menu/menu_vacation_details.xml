@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--    Task B3-->
+<!--    Changes: Included CRUD, Notify, Validation, and share features   | Files: VacationDetails.java,-->
+<!--    myReceiver.java, menu_vacation_details.xml    | lines: menu_vacation_details = 320-356 /-->
+<!--    myReceiver.java = All lines / VacationDetails.java = notify: 320-356, Share: 357 - 381 / Validation = 97-138-->
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title = "Save Vacation"
         android:id = "@+id/vacation_save"/>

@@ -20,6 +20,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.d308_mobile_application.R;
 
+//Task B3
+//Changes: Included CRUD, Notify, Validation, and share features   | Files: VacationDetails.java,
+//myReceiver.java, menu_vacation_details.xml    | lines: menu_vacation_details = 320-356 /
+//myReceiver.java = All lines / VacationDetails.java = notify: 320-356, Share: 357 - 381 / Validation = 97-138
+
 public class MyReceiver extends BroadcastReceiver {
 
     String channel_id = "test";
