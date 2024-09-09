@@ -35,6 +35,12 @@ import java.util.concurrent.ExecutionException;
 //lines: activity_excursion_details.xml = Title: 23-30 , Date : 34-46 /
 //ExcursionDetails.java = Title = 53-54, 167, 171. Date = 59-60, 71-106, 107-114
 
+//Task B5
+//Changes: Added viewholder in vacations page for excursions. Options to update, save, and delete excursions added.
+//Validation enforcing date format via datepicker. Alert of excursion name on the start date.
+//validation enforced on excursion so it can ONLY select a date within vacation start and end date.
+//| Files: VacationDetails.java, ExcursionDetails.java    | lines:  vacation Details = 135-145. excursion details = 77-111, 153-214
+
 public class ExcursionDetails extends AppCompatActivity {
     String excursionTitle;
     String excursionDate;
