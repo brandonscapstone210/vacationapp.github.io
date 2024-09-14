@@ -17,6 +17,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#C7F2BE"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="-64dp"
         tools:layout_editor_absoluteY="46dp">
@@ -27,7 +28,6 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_margin="2dp"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:text="Excursion Title: "/>
@@ -50,7 +50,8 @@
                 android:id="@+id/excursion_date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="41dp"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -3,16 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/dark_green">
 
 
     <TextView
         android:id="@+id/view_excursion_name"
         android:layout_width="132dp"
         android:layout_height="26dp"
-        android:background="@color/cardview_light_background"
+        android:background="@color/dark_green"
         android:text="TextView"
         android:textAlignment="textEnd"
+        android:textColor="#eeeee4"
         app:layout_constraintEnd_toStartOf="@+id/view_excursion_date"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +24,9 @@
         android:id="@+id/view_excursion_date"
         android:layout_width="156dp"
         android:layout_height="27dp"
-        android:background="@color/cardview_light_background"
+        android:background="@color/dark_green"
         android:text="TextView"
+        android:textColor="#eeeee4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_excursion_name"
         app:layout_constraintTop_toTopOf="parent" />

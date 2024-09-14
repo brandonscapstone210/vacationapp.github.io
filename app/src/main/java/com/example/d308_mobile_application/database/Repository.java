@@ -3,6 +3,8 @@ package com.example.d308_mobile_application.database;
 import android.app.Application;
 import android.icu.text.MessagePattern;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.d308_mobile_application.dao.ExcursionDAO;
 import com.example.d308_mobile_application.dao.VacationDAO;
 import com.example.d308_mobile_application.entities.Excursion;
@@ -33,6 +35,7 @@ public class Repository {
     public List<Vacation> getAllVacations() throws ExecutionException, InterruptedException {
         return databaseExecutor.submit(mVacationDAO::getAllVacations).get();
     }
+
 
     public List<Excursion> getAllExcursions() throws ExecutionException, InterruptedException {
         return databaseExecutor.submit(mExcursionDAO::getAllExcursions).get();

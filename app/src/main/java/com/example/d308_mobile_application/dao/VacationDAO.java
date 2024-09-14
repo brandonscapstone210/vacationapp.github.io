@@ -1,5 +1,6 @@
 package com.example.d308_mobile_application.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -26,7 +27,6 @@ public interface VacationDAO {
 
     @Query("SELECT * FROM vacations ORDER BY vacationID ASC")
     List<Vacation> getAllVacations();
-
 
 
 }
